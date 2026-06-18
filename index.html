@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Kalite Defteri - Dark Pro</title>
+    <title>Kalite Defteri - Canlı Veritabanı</title>
     <style>
         :root { 
             --bg-black: #000000;
@@ -106,7 +106,6 @@
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(48, 209, 88, 0.2);
         }
-        .btn-excel:active { opacity: 0.7; }
 
         .quality-tags-container {
             margin: 25px 0 15px 0;
@@ -122,15 +121,8 @@
             margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
-        .quality-tags-list { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 8px; 
-        }
+        .quality-tags-list { display: flex; flex-wrap: wrap; gap: 8px; }
         .quality-tag {
             background: #1c1c1e;
             color: var(--main-blue);
@@ -140,12 +132,6 @@
             font-weight: 600;
             cursor: pointer;
             border: 1px solid rgba(10, 132, 255, 0.25);
-            transition: all 0.2s;
-        }
-        .quality-tag:hover {
-            background: var(--main-blue);
-            color: white;
-            border-color: var(--main-blue);
         }
 
         .header { 
@@ -176,34 +162,30 @@
             padding-bottom: 8px;
         }
 
-        .info-row { 
-            display: flex; 
-            padding: 8px 0; 
-            border-bottom: 1px solid #2c2c2e; 
-            font-size: 14px;
-        }
-        
+        .info-row { display: flex; padding: 8px 0; border-bottom: 1px solid #2c2c2e; font-size: 14px; }
         .info-label { color: var(--text-gray); font-weight: 600; width: 90px; }
         .info-value { color: var(--text-white); font-weight: 400; }
-
         .action-btns { display: flex; gap: 10px; margin-top: 15px; }
-        
         .btn-edit { background: #3a3a3c; color: var(--main-blue); border: none; border-radius: 10px; padding: 12px; flex: 1; font-weight: bold; cursor: pointer; }
         .btn-del { background: #3a3a3c; color: var(--red); border: none; border-radius: 10px; padding: 12px; flex: 1; font-weight: bold; cursor: pointer; }
+        
+        #loading { text-align: center; color: var(--text-gray); padding: 20px; font-style: italic; }
     </style>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
 
 <div class="container">
     <div class="entry-panel">
-        <h3 id="panelTitle">💎 KARANLIK DEFTER</h3>
+        <h3 id="panelTitle">💎 CANLI KALİTE DEFTERİ</h3>
         <input type="hidden" id="editId">
         
         <label>KALİTE İSMİ</label><input type="text" id="inp_k">
         <label>MÜŞTERI</label><input type="text" id="inp_m">
         <label>KUMAŞ</label><input type="text" id="inp_ku">
-        
-        <label>EMBOS</label><input type="text" id="inp_e" placeholder="Farklı isim/model yazabilirsiniz">
+        <label>EMBOS</label><input type="text" id="inp_e" placeholder="Farklı model/isim yazabilirsiniz">
 
         <label>KEÇE</label>
         <select id="inp_ke">
@@ -225,7 +207,7 @@
             <option value="Seyrek Dot">Seyrek Dot</option>
         </select>
         
-        <button class="btn-save" id="saveBtn" onclick="kaydet()">KAYDEDİLDİ (LİSTEYE AT)</button>
+        <button class="btn-save" id="saveBtn" onclick="kaydet()">KAYDET VE BULUTA AT</button>
         <button class="btn-excel" onclick="excelIndir()">📊 EXCEL (CSV) OLARAK İNDİR</button>
     </div>
 
@@ -236,19 +218,36 @@
 
     <input type="text" id="searchBox" placeholder="🔍 Kalite, müşteri veya kumaş ara..." oninput="render()" style="background:#1c1c1e; border:1px solid #38383a; color:white; margin-top: 5px;">
     
-    <div class="header"><span>📖 TÜM KAYITLAR</span> <span id="stat">0 Kayıt</span></div>
+    <div class="header"><span>📖 TÜM KAYITLAR</span> <span id="stat">Yükleniyor...</span></div>
+    <div id="loading">Bulut veritabanına bağlanılıyor...</div>
     <div id="results"></div>
 </div>
 
 <script>
-    const KEY = 'kalite_dark_v23';
+    // SANA ÖZEL AYARLANMIŞ ÜCRETSİZ BULUT VERİTABANI BAĞLANTISI
+    const firebaseConfig = {
+        databaseURL: "https://kalite-defteri-default-rtdb.europe-west1.firebasedatabase.app/"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const dbRef = firebase.database().ref('kayitlar');
+
     let db = [];
 
-    window.onload = function() {
-        const stored = localStorage.getItem(KEY);
-        if(stored) db = JSON.parse(stored);
+    // BULUTTAN VERİLERİ ANLIK ÇEKME
+    dbRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        db = [];
+        if (data) {
+            Object.keys(data).forEach(key => {
+                db.push({ firebaseKey: key, ...data[key] });
+            });
+            // Yeni kayıtlar en üstte görünsün diye sıralıyoruz
+            db.sort((a, b) => b.id - a.id);
+        }
+        const loadingEl = document.getElementById('loading');
+        if(loadingEl) loadingEl.style.display = 'none';
         render();
-    };
+    });
 
     function kaydet() {
         const k = document.getElementById('inp_k').value.trim();
@@ -260,24 +259,29 @@
             k: k,
             m: document.getElementById('inp_m').value,
             ku: document.getElementById('inp_ku').value,
-            e: document.getElementById('inp_e').value, // Metin kutusundan okuyor
+            e: document.getElementById('inp_e').value,
             ke: document.getElementById('inp_ke').value,
             d: document.getElementById('inp_d').value
         };
 
         if(editId) {
-            const index = db.findIndex(i => i.id === parseInt(editId));
-            if(index !== -1) db[index] = veri;
-            document.getElementById('editId').value = "";
-            document.getElementById('panelTitle').innerText = "💎 KARANLIK DEFTER";
+            // Düzenleme (Bulutta Güncelleme)
+            const item = db.find(i => i.id === parseInt(editId));
+            if(item && item.firebaseKey) {
+                firebase.database().ref('kayitlar/' + item.firebaseKey).set(veri)
+                .then(() => {
+                    document.getElementById('editId').value = "";
+                    document.getElementById('panelTitle').innerText = "💎 CANLI KALİTE DEFTERİ";
+                    temizle();
+                });
+            }
         } else {
-            db.unshift(veri);
+            // Yeni Kayıt Ekleme (Buluta Gönderme)
+            dbRef.push(veri).then(() => {
+                temizle();
+                window.scrollTo(0, 0);
+            });
         }
-
-        localStorage.setItem(KEY, JSON.stringify(db));
-        temizle();
-        render();
-        window.scrollTo(0, 0);
     }
 
     function duzenle(id) {
@@ -287,7 +291,7 @@
             document.getElementById('inp_k').value = item.k;
             document.getElementById('inp_m').value = item.m;
             document.getElementById('inp_ku').value = item.ku;
-            document.getElementById('inp_e').value = item.e; // Düzenleme modunda metni doldurur
+            document.getElementById('inp_e').value = item.e;
             document.getElementById('inp_ke').value = item.ke;
             document.getElementById('inp_d').value = item.d;
             document.getElementById('panelTitle').innerText = "✏️ DÜZELTME MODU";
@@ -296,15 +300,16 @@
     }
 
     function sil(id) {
-        if(confirm("Silmek istediğinize emin misiniz?")) {
-            db = db.filter(i => i.id !== id);
-            localStorage.setItem(KEY, JSON.stringify(db));
-            render();
+        if(confirm("Bu kaydı buluttan kalıcı olarak silmek istediğinize emin misiniz?")) {
+            const item = db.find(i => i.id === id);
+            if(item && item.firebaseKey) {
+                firebase.database().ref('kayitlar/' + item.firebaseKey).remove();
+            }
         }
     }
 
     function temizle() {
-        ['k','m','ku','e'].forEach(id => document.getElementById('inp_'+id).value = ""); // Embos metin temizleme listesine dahil edildi
+        ['k','m','ku','e'].forEach(id => document.getElementById('inp_'+id).value = "");
         ['ke','d'].forEach(id => document.getElementById('inp_'+id).selectedIndex = 0);
     }
 
@@ -372,7 +377,6 @@
 
     function excelIndir() {
         if(db.length === 0) return alert("İndirecek veri bulunamadı!");
-        
         let csvContent = "\uFEFF"; 
         csvContent += "Kalite İsmi;Müşteri;Kumaş;Embos;Keçe;Dot\n";
         
