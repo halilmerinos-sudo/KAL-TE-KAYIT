@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Kalite Defteri - Dark Pro</title>
+    <style>
+        :root { 
+            --bg-black: #000000;
+            --panel-bg: #1c1c1e;
+            --input-bg: #2c2c2e;
+            --main-blue: #0a84ff;
+            --main-green: #30d158;
+            --text-gold: #ffd60a;
+            --text-white: #ffffff;
+            --text-gray: #8e8e93;
+            --red: #ff453a;
+            --border-color: #38383a;
+        }
+        
+        body { 
+            font-family: -apple-system, sans-serif; 
+            background-color: var(--bg-black); 
+            margin: 0; 
+            padding: env(safe-area-inset-top) 20px 60px; 
+            color: var(--text-white);
+        }
+
+        .container { max-width: 480px; margin: auto; }
+        
+        .entry-panel { 
+            background: var(--panel-bg); 
+            padding: 25px; 
+            border-radius: 20px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5); 
+            margin-bottom: 30px; 
+            border: 1px solid var(--border-color);
+        }
+
+        .entry-panel h3 { 
+            margin: 0 0 20px 0; 
+            color: var(--main-blue); 
+            text-align: center; 
+            font-size: 20px; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        label { 
+            font-size: 11px; 
+            color: var(--text-gray); 
+            font-weight: 700; 
+            margin-left: 5px; 
+            display: block; 
+            margin-top: 12px;
+        }
+
+        input, select { 
+            width: 100%; 
+            padding: 14px; 
+            margin: 6px 0; 
+            border: 1px solid var(--border-color); 
+            border-radius: 12px; 
+            font-size: 16px; 
+            box-sizing: border-box; 
+            background: var(--input-bg);
+            color: white;
+            transition: 0.3s;
+            -webkit-appearance: none;
+        }
+
+        input:focus, select:focus { 
+            border-color: var(--main-blue); 
+            outline: none; 
+            background: #3a3a3c;
+        }
+
+        .btn-save { 
+            background: var(--main-blue); 
+            color: white; 
+            border: none; 
+            border-radius: 14px; 
+            padding: 18px; 
+            width: 100%; 
+            font-weight: bold; 
+            font-size: 17px; 
+            margin-top: 25px; 
+            box-shadow: 0 4px 15px rgba(10, 132, 255, 0.3);
+            cursor: pointer;
+        }
+
+        .btn-save:active { opacity: 0.7; }
+
+        .btn-excel {
+            background: var(--main-green);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 12px;
+            width: 100%;
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(48, 209, 88, 0.2);
+        }
+        .btn-excel:active { opacity: 0.7; }
+
+        .quality-tags-container {
+            margin: 25px 0 15px 0;
+            padding: 15px;
+            background: rgba(10, 132, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(10, 132, 255, 0.2);
+        }
+        .quality-tags-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .quality-tags-list { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 8px; 
+        }
+        .quality-tag {
+            background: #1c1c1e;
+            color: var(--main-blue);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid rgba(10, 132, 255, 0.25);
+            transition: all 0.2s;
+        }
+        .quality-tag:hover {
+            background: var(--main-blue);
+            color: white;
+            border-color: var(--main-blue);
+        }
+
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            border-bottom: 2px solid var(--main-blue); 
+            margin-top: 20px; 
+            padding-bottom: 8px; 
+            color: var(--main-blue); 
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .res-card { 
+            background: var(--panel-bg); 
+            padding: 18px; 
+            border-radius: 18px; 
+            margin-bottom: 15px; 
+            border: 1px solid var(--border-color);
+        }
+
+        .res-card b.title { 
+            font-size: 19px; 
+            color: var(--text-gold); 
+            display: block; 
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .info-row { 
+            display: flex; 
+            padding: 8px 0; 
+            border-bottom: 1px solid #2c2c2e; 
+            font-size: 14px;
+        }
+        
+        .info-label { color: var(--text-gray); font-weight: 600; width: 90px; }
+        .info-value { color: var(--text-white); font-weight: 400; }
+
+        .action-btns { display: flex; gap: 10px; margin-top: 15px; }
+        
+        .btn-edit { background: #3a3a3c; color: var(--main-blue); border: none; border-radius: 10px; padding: 12px; flex: 1; font-weight: bold; cursor: pointer; }
+        .btn-del { background: #3a3a3c; color: var(--red); border: none; border-radius: 10px; padding: 12px; flex: 1; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="entry-panel">
+        <h3 id="panelTitle">💎 KARANLIK DEFTER</h3>
+        <input type="hidden" id="editId">
+        
+        <label>KALİTE İSMİ</label><input type="text" id="inp_k">
+        <label>MÜŞTERI</label><input type="text" id="inp_m">
+        <label>KUMAŞ</label><input type="text" id="inp_ku">
+        
+        <label>EMBOS</label><input type="text" id="inp_e" placeholder="Farklı isim/model yazabilirsiniz">
+
+        <label>KEÇE</label>
+        <select id="inp_ke">
+            <option value="Yok">Yok</option>
+            <option value="Astar">Astar</option>
+            <option value="100 gr">100 gr</option>
+            <option value="150 gr">150 gr</option>
+            <option value="200 gr">200 gr</option>
+            <option value="250 gr">250 gr</option>
+            <option value="300 gr">300 gr</option>
+            <option value="400 gr">400 gr</option>
+        </select>
+
+        <label>DOT</label>
+        <select id="inp_d">
+            <option value="Yok">Yok</option>
+            <option value="Var">Var</option>
+            <option value="Sık Dot">Sık Dot</option>
+            <option value="Seyrek Dot">Seyrek Dot</option>
+        </select>
+        
+        <button class="btn-save" id="saveBtn" onclick="kaydet()">KAYDEDİLDİ (LİSTEYE AT)</button>
+        <button class="btn-excel" onclick="excelIndir()">📊 EXCEL (CSV) OLARAK İNDİR</button>
+    </div>
+
+    <div class="quality-tags-container">
+        <div class="quality-tags-title">📋 Kayıtlı Kalitelerimiz</div>
+        <div id="quality-tags-list" class="quality-tags-list"></div>
+    </div>
+
+    <input type="text" id="searchBox" placeholder="🔍 Kalite, müşteri veya kumaş ara..." oninput="render()" style="background:#1c1c1e; border:1px solid #38383a; color:white; margin-top: 5px;">
+    
+    <div class="header"><span>📖 TÜM KAYITLAR</span> <span id="stat">0 Kayıt</span></div>
+    <div id="results"></div>
+</div>
+
+<script>
+    const KEY = 'kalite_dark_v23';
+    let db = [];
+
+    window.onload = function() {
+        const stored = localStorage.getItem(KEY);
+        if(stored) db = JSON.parse(stored);
+        render();
+    };
+
+    function kaydet() {
+        const k = document.getElementById('inp_k').value.trim();
+        if(!k) return alert("Kalite ismi girmelinesiniz!");
+
+        const editId = document.getElementById('editId').value;
+        const veri = {
+            id: editId ? parseInt(editId) : Date.now(),
+            k: k,
+            m: document.getElementById('inp_m').value,
+            ku: document.getElementById('inp_ku').value,
+            e: document.getElementById('inp_e').value, // Metin kutusundan okuyor
+            ke: document.getElementById('inp_ke').value,
+            d: document.getElementById('inp_d').value
+        };
+
+        if(editId) {
+            const index = db.findIndex(i => i.id === parseInt(editId));
+            if(index !== -1) db[index] = veri;
+            document.getElementById('editId').value = "";
+            document.getElementById('panelTitle').innerText = "💎 KARANLIK DEFTER";
+        } else {
+            db.unshift(veri);
+        }
+
+        localStorage.setItem(KEY, JSON.stringify(db));
+        temizle();
+        render();
+        window.scrollTo(0, 0);
+    }
+
+    function duzenle(id) {
+        const item = db.find(i => i.id === id);
+        if(item) {
+            document.getElementById('editId').value = item.id;
+            document.getElementById('inp_k').value = item.k;
+            document.getElementById('inp_m').value = item.m;
+            document.getElementById('inp_ku').value = item.ku;
+            document.getElementById('inp_e').value = item.e; // Düzenleme modunda metni doldurur
+            document.getElementById('inp_ke').value = item.ke;
+            document.getElementById('inp_d').value = item.d;
+            document.getElementById('panelTitle').innerText = "✏️ DÜZELTME MODU";
+            window.scrollTo(0, 0);
+        }
+    }
+
+    function sil(id) {
+        if(confirm("Silmek istediğinize emin misiniz?")) {
+            db = db.filter(i => i.id !== id);
+            localStorage.setItem(KEY, JSON.stringify(db));
+            render();
+        }
+    }
+
+    function temizle() {
+        ['k','m','ku','e'].forEach(id => document.getElementById('inp_'+id).value = ""); // Embos metin temizleme listesine dahil edildi
+        ['ke','d'].forEach(id => document.getElementById('inp_'+id).selectedIndex = 0);
+    }
+
+    function filterByQuality(qualityName) {
+        const searchBox = document.getElementById('searchBox');
+        searchBox.value = qualityName;
+        render();
+    }
+
+    function renderQualityTags() {
+        const tagsContainer = document.getElementById('quality-tags-list');
+        if(!tagsContainer) return;
+        tagsContainer.innerHTML = '';
+
+        const allQualities = db.map(item => (item.k || '').trim()).filter(k => k !== '');
+        const uniqueQualities = [...new Set(allQualities)];
+
+        if(uniqueQualities.length === 0) {
+            tagsContainer.innerHTML = '<span style="font-size:13px; color:var(--text-gray); font-style:italic;">Henüz kayıtlı kalite yok.</span>';
+            return;
+        }
+
+        uniqueQualities.sort((a, b) => a.localeCompare(b, 'tr'));
+
+        uniqueQualities.forEach(quality => {
+            const span = document.createElement('span');
+            span.className = 'quality-tag';
+            span.textContent = quality;
+            span.onclick = function() { filterByQuality(quality); };
+            tagsContainer.appendChild(span);
+        });
+    }
+
+    function render() {
+        renderQualityTags();
+
+        const term = document.getElementById('searchBox').value.toLowerCase();
+        const res = document.getElementById('results');
+        
+        const filtered = db.filter(i => 
+            (i.k || '').toLowerCase().includes(term) || 
+            (i.m || '').toLowerCase().includes(term) || 
+            (i.ku || '').toLowerCase().includes(term)
+        );
+        
+        res.innerHTML = "";
+        
+        filtered.forEach((item) => {
+            res.innerHTML += `
+            <div class="res-card">
+                <b class="title">${item.k}</b>
+                <div class="info-row"><span class="info-label">Müşteri:</span><span class="info-value">${item.m || '-'}</span></div>
+                <div class="info-row"><span class="info-label">Kumaş:</span><span class="info-value">${item.ku || '-'}</span></div>
+                <div class="info-row"><span class="info-label">Embos:</span><span class="info-value">${item.e || '-'}</span></div>
+                <div class="info-row"><span class="info-label">Keçe:</span><span class="info-value">${item.ke || '-'}</span></div>
+                <div class="info-row"><span class="info-label">Dot:</span><span class="info-value">${item.d || '-'}</span></div>
+                <div class="action-btns">
+                    <button class="btn-edit" onclick="duzenle(${item.id})">DÜZELT</button>
+                    <button class="btn-del" onclick="sil(${item.id})">SİL</button>
+                </div>
+            </div>`;
+        });
+        document.getElementById('stat').innerText = filtered.length + " Kayıt";
+    }
+
+    function excelIndir() {
+        if(db.length === 0) return alert("İndirecek veri bulunamadı!");
+        
+        let csvContent = "\uFEFF"; 
+        csvContent += "Kalite İsmi;Müşteri;Kumaş;Embos;Keçe;Dot\n";
+        
+        db.forEach(item => {
+            let row = [
+                item.k || '-',
+                item.m || '-',
+                item.ku || '-',
+                item.e || '-',
+                item.ke || '-',
+                item.d || '-'
+            ].join(";");
+            csvContent += row + "\n";
+        });
+        
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", "Kalite_Kayit_Defteri.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+</body>
+</html>
