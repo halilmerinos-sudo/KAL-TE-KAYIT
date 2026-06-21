@@ -154,16 +154,6 @@ body{background:#0f172a;color:white;min-height:100vh;padding:12px;-webkit-user-s
 .delta-val{font-size:0.72rem;font-family:monospace;font-weight:bold;}
 .delta-time{font-size:0.65rem;color:#475569;}
 .delta-clear{background:none;border:1px solid #475569;color:#94a3b8;border-radius:5px;padding:2px 7px;font-size:0.68rem;cursor:pointer;margin-left:6px;}
-
-.ai-predict-btn { width: 100%; padding: 11px; background: linear-gradient(135deg, #059669, #10b981); color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
-.ai-predict-btn:active { transform: scale(0.98); }
-.ai-window { background: #0f172a; border: 1px dashed #10b981; border-radius: 12px; padding: 12px; margin-top: 12px; }
-.ai-win-title { font-size: 0.78rem; color: #10b981; font-weight: bold; display: flex; justify-content: space-between; border-bottom: 1px dashed #334155; padding-bottom: 6px; margin-bottom: 8px; }
-.ai-win-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
-.ai-m-box { background: #1e293b; border-radius: 6px; padding: 6px; font-size: 0.7rem; }
-.ai-m-lbl { color: #94a3b8; margin-bottom: 2px; }
-.ai-m-val { font-weight: bold; font-family: monospace; }
-.ai-report-text { font-size: 0.75rem; line-height: 1.5; color: #e2e8f0; background: #13241d; padding: 10px; border-radius: 8px; border-left: 3px solid #10b981; }
 </style>
 </head>
 <body>
@@ -296,44 +286,15 @@ body{background:#0f172a;color:white;min-height:100vh;padding:12px;-webkit-user-s
 <div class="mrow"><span class="mlbl">💧 Spread</span><span class="mval" id="dtSpread" style="color:#fbbf24;">—</span></div>
 <div style="margin:6px 0 4px;"><canvas id="dtSpark" width="310" height="44" style="display:block;border-radius:6px;background:#0f172a;"></canvas></div>
 <div class="mhdr" style="color:#ff4757;border-left-color:#ff4757;">🚨 EMİR DEFTERİ</div>
-<div class="mrow"><span class="mlbl" style="color:#ff4757;">Bekleyen Satış (Ask Walls)</span><span class="mval" id="dtBAsk">—</span></div>
-<div class="mrow"><span class="mlbl" style="color:#22c55e;">Bekleyen Alış (Bid Depth)</span><span class="mval" id="dtBBid">—</span></div>
-
-<div class="mhdr" style="color:#10b981; border-left-color:#10b981;">🧠 10 DK. VADELİ PUMP & TREND ÖNGÖRÜSÜ</div>
-<button class="ai-predict-btn" onclick="generateFuture10MinPrediction()">🔮 1 Saatlik Veriyi Süz ve İlk 10 Dk. Tahmin Et</button>
-<div class="ai-window" id="aiPredictWindow" style="display:none;">
-    <div class="ai-win-title">
-        <span>🤖 DEEP-METRIC FUTURE TENDENCY</span>
-        <span style="color:#fbbf24;" id="aiPredictTime">Vade: +10 Dk</span>
-    </div>
-    <div class="ai-win-metrics">
-        <div class="ai-m-box">
-            <div class="ai-m-lbl">Hacim Akışı (Spike)</div>
-            <div class="ai-m-val" id="aiMVolume" style="color:#e2e8f0;">Dengeli</div>
-        </div>
-        <div class="ai-m-box">
-            <div class="ai-m-lbl">Zirve Tamamlanma Durumu</div>
-            <div class="ai-m-val" id="aiMTop" style="color:#ff4757;">Belirsiz</div>
-        </div>
-        <div class="ai-m-box">
-            <div class="ai-m-lbl">Geri Dönüş Eğilimi</div>
-            <div class="ai-m-val" id="aiMReverse" style="color:#fbbf24;">Yatay Kontrol</div>
-        </div>
-        <div class="ai-m-box">
-            <div class="ai-m-lbl">Hedef Koridor (10 Dk.)</div>
-            <div class="ai-m-val" id="aiMTarget" style="color:#22c55e;">0.00 ₺</div>
-        </div>
-    </div>
-    <div class="ai-report-text" id="aiPredictReport">Grafik matrisi okunuyor...</div>
-</div>
-
+<div class="mrow"><span class="mlbl" style="color:#ff4757;">Bekleyen Satış</span><span class="mval" id="dtBAsk">—</span></div>
+<div class="mrow"><span class="mlbl" style="color:#22c55e;">Bekleyen Alış</span><span class="mval" id="dtBBid">—</span></div>
 <div class="mhdr">📊 TEKNİK ANALİZ</div>
 <div class="mrow"><span class="mlbl">Trend</span><span class="mval" id="dtTrend">—</span></div>
 <div class="mrow"><span class="mlbl">Hacim Durumu</span><span class="mval" id="dtVolS">—</span></div>
 <div class="mrow" style="background:rgba(162,28,172,0.15);padding:6px;border-radius:6px;border:1px dashed #c084fc;"><span class="mlbl" style="font-weight:bold;color:#f0abfc;font-size:0.9rem;">🧪 MFI (Para Akışı)</span><span class="mval" id="dtMFI" style="font-size:1.1rem;color:#f0abfc;font-weight:800;">—</span></div>
-<div class="mrow"><span class="mlbl">RSI (5m / 14 Periyot)</span><span class="mval" id="dtRSI">—</span></div>
-<div class="mrow"><span class="mlbl">MA10 Trend</span><span class="mval" id="dtMA">—</span></div>
-<div class="mrow"><span class="mlbl">⚡ Oynaklık Hızı</span><span class="mval" id="dtSpeed">—</span></div>
+<div class="mrow"><span class="mlbl">RSI</span><span class="mval" id="dtRSI">—</span></div>
+<div class="mrow"><span class="mlbl">MA10</span><span class="mval" id="dtMA">—</span></div>
+<div class="mrow"><span class="mlbl">⚡ Hız</span><span class="mval" id="dtSpeed">—</span></div>
 <div class="mrow"><span class="mlbl">⚖️ BTC Korelasyon</span><span class="mval" id="dtCorr">—</span></div>
 <div class="mrow" style="border:none;"><span class="mlbl">🕐 Geçmiş</span><span class="mval" id="dtHist" style="font-size:0.72rem;">—</span></div>
 <div class="mhdr" style="color:#ff4757;border-left-color:#ff4757;">🛑 STOP-LOSS</div>
@@ -341,7 +302,6 @@ body{background:#0f172a;color:white;min-height:100vh;padding:12px;-webkit-user-s
 <div class="sl-input">
 <span style="font-size:0.72rem;color:#ff4757;font-weight:bold;white-space:nowrap;">Düşüş %:</span>
 <input type="number" id="slInput" placeholder="Örn: 5" oninput="setStopLoss()">
-<input type="hidden" id="prevBtcPrice" value="0">
 <button class="palbtn" style="background:#ff4757;" onclick="clearStopLoss()">✕</button>
 </div>
 <div id="slStatus" style="font-size:0.7rem;color:#94a3b8;margin-top:3px;text-align:center;"></div>
@@ -374,13 +334,13 @@ body{background:#0f172a;color:white;min-height:100vh;padding:12px;-webkit-user-s
 
 <div class="modal" id="infoModal">
 <div class="mcard">
-<div class="mtitle" style="color:#3b82f6;">⚙️ SİSTEM VE CANLI TARAYICI BİLGİSİ</div>
+<div class="mtitle" style="color:#3b82f6;">⚙️ SİSTEM BİLGİSİ</div>
 <div class="info-box">
-<b>1. Hacim Patlaması (Volume Spikes):</b> Grafik altındaki barların önceki barlara kıyasla 5-10 kat büyümesiyle anlık alım dalgaları tespit edilir. Hacim destekli yükselişler güçlü devamlılık sinyalidir.<br><br>
-<b>2. Kısa Vadeli Mum Formasyonları:</b> Sistem 1m, 3m ve 5m mikro zaman dilimlerini tarar. Yukarı yönlü uzayan yeşil Marubozu veya güçlü gövdeli mumları hız farkıyla algılar.<br><br>
-<b>3. Teknik İndikatör Takibi:</b> RSI göstergesinin 5 dakikalık periyotlarda hızla 70 seviyesinin üzerine fırlaması (aşırı alım baskısı) ve Bollinger Üst Bandı'nın sert delinerek volatilite genişlemesi yapması anlık takip edilir.<br><br>
-<b>4. Emir Defteri (Order Book) ve Derinlik:</b> Satış (ask) duvarlarının saniyeler içinde erimesi ve agresif piyasa alım emirlerinin (market buy) gelmesi anlık fiyata yansıtılarak puanlanır.<br><br>
-<b>💡 Harici Araç Önerileri:</b> 7/24 ekran başında kalmamak için borsaların yüzdesel mobil alarmlarını, TradingView Kripto Takipçisi (Crypto Screener) filtrelerini ve Telegram tabanlı "Volume Spike Detector" botlarını kullanabilirsiniz.
+<b>📡 Bağlantı:</b> Engellenmeyen %100 canlı Binance Oracle veri motoru entegre edilmiştir.<br><br>
+<b>⚡ Mikro Takip:</b> Listelenen tüm coinlerde anlık %0.50'lik artı veya eksi yönlü fiyat değişimlerinde özel küçük bildirim penceresi açılır ve ses sinyali tetiklenir.<br><br>
+<b>💾 Veri Saklama:</b> Seçili coinler ve alarmlar kapatıp açınca korunur.<br><br>
+<b>🛑 Stop-Loss:</b> Belirtilen % düşüşte "Stop-Loss tetiklendi!" uyarısı.<br><br>
+<b>🔔 Fiyat Alarmı:</b> Hedef fiyata ulaşınca bildirim.
 </div>
 <button class="mcbtn" style="background:#3b82f6;" onclick="closeInfo()">Kapat</button>
 </div>
@@ -400,7 +360,7 @@ var mfiHistory={};
 var priceAlerts={}, stopLosses={};
 var firedPrice={}, firedSL={}, firedRSI={}, firedMA={};
 var signalLog=[], dataReadyCount=0;
-var deltaLog=[]; 
+var deltaLog=[];
 var WARMUP=3; 
 var lastPricesMap={}; 
 var currentAnalysisTab = 'dip'; 
@@ -647,7 +607,7 @@ function calcMA(pair, per) {
 function calcSpeed(pair) {
     var h = priceHistory[pair]; if (!h || h.length < 3) return '';
     var d = Math.abs(h[h.length-1]-h[h.length-3]), p = (d/(h[h.length-3]||1))*100;
-    return p>0.15?'⚡ HIZLI PUMP':p>0.05?'→ ORTA':'· YAVAŞ';
+    return p>0.15?'⚡ HIZLI':p>0.05?'→ ORTA':'· YAVAŞ';
 }
 function calcCorr(pair) {
     if (pair==='BTCTRY') return '— BTC kendisi';
@@ -669,8 +629,8 @@ function calcHistSummary(pair) {
 function calcMetrics(c) {
     var l=parseFloat(c.last), o=parseFloat(c.open), ch=parseFloat(c.dailyPercent);
     return {
-        trend: (l>o&&ch>0)?'Yükseliş 📈':'Düşüş 📉',
-        volS: (ch>1.5&&parseFloat(c.volume)>2000000)?'Hacim Patlaması 🔥':'Normal 📊',
+        trend: (l>o&&ch>0)?'Yükseliş 📈':(l<o&&ch<0)?'Düşüş 📉':'Yatay ⚖️',
+        volS: (ch>1.5&&parseFloat(c.volume)>2000000)?'Güçlü 🔼':'Normal 📊',
         rsi: calcRSI(c.pair)
     };
 }
@@ -683,15 +643,15 @@ function checkAllAlarms(data) {
         var p=c.pair, cur=parseFloat(c.last), rsi=calcRSI(p);
         if (volHistory[p] && volHistory[p].length >= 4) {
             var pv=volHistory[p].slice(0,-1), av=pv.reduce(function(a,b){return a+b;},0)/pv.length, vc=volHistory[p][volHistory[p].length-1];
-            if (av>0 && vc>av*5 && !volFired[p]) {
-                volFired[p]=true; if(warm && selCoins.has(p)) { pushAlarm(p, 'HACİM PATLAMASI', av, vc, 'Hacim barlarında önceki ortalamaya kıyasla 5-10 kat dikey çubuk algılandı!'); }
+            if (av>0 && vc>av*1.5 && !volFired[p]) {
+                volFired[p]=true; if(warm && selCoins.has(p)) { pushAlarm(p, 'HACİM', av, vc, 'Hacim patlaması yaşanıyor!'); }
             }
         }
-        if(rsi>70 && !firedRSI[p+'ob']){ firedRSI[p+'ob']=true; addSignal(p,'RSI_OB','Aşırı Alım Baskısı (RSI > 70)'); }
+        if(rsi>75 && !firedRSI[p+'ob']){ firedRSI[p+'ob']=true; addSignal(p,'RSI_OB','Aşırı Alım (Tepe)'); }
         if(rsi<25 && !firedRSI[p+'os']){ firedRSI[p+'os']=true; addSignal(p,'RSI_OS','Aşırı Satış (Dip)'); }
         if(priceAlerts[p]) {
             var tgt=priceAlerts[p];
-            if(!firedPrice[p] && cur>=tgt) { firedPrice[p]=true; pushAlarm(p,'HEDEF',tgt,cur,'Borsa Alarmı: Hedef fiyata veya kurulan süre kısıtına ulaşıldı!'); }
+            if(!firedPrice[p] && cur>=tgt) { firedPrice[p]=true; pushAlarm(p,'HEDEF',tgt,cur,'Hedef fiyatına ulaşıldı!'); }
         }
         if(stopLosses[p]) {
             var slPrice=stopLosses[p];
@@ -708,12 +668,12 @@ function showNextAlarm() {
     if(!alarmQueue.length) return;
     var a=alarmQueue[0];
     document.getElementById('alName').innerText=a.pair.replace('TRY','');
-    document.getElementById('alTitle').innerText='🚨 ' + a.type + ' UYARISI';
+    document.getElementById('alTitle').innerText='🚨 ' + a.type + ' ALARMI';
     document.getElementById('alPrice').innerText=fmtP(a.newV);
-    document.getElementById('alOld').innerText=typeof a.oldV==='number'?a.oldV.toFixed(2):a.oldV;
-    document.getElementById('alNew').innerText=typeof a.newV==='number'?a.newV.toFixed(2):a.newV;
+    document.getElementById('alOld').innerText=a.oldV;
+    document.getElementById('alNew').innerText=a.newV;
     document.getElementById('alDiff').innerText=a.msg;
-    document.getElementById('alMsg').innerText=a.pair + ' paritesinde ani hacim/fiyat momentum kırılımı!';
+    document.getElementById('alMsg').innerText=a.pair + ' paritesinde kritik durum!';
     document.getElementById('alarmModal').style.display='flex';
 }
 function closeAlarm() {
@@ -767,7 +727,7 @@ function doRender() {
         h+='<div class="cchk"><input type="checkbox" '+isCh+' onclick="handleCheck(event,\''+c.pair+'\')"></div>';
         h+='<div class="cbody">';
         h+='<div class="ctop"><span class="cname">'+c.pair.replace('TRY','')+' <span style="font-size:0.68rem;color:#64748b;">/TRY</span></span><span class="cchg" style="color:'+arrColor+'">'+sign+c.dailyPercent.toFixed(2)+'%</span></div>';
-        h+='<div class="cmid">Durum: '+m.trend+' | '+m.volS+' <span class="badge bd-fast">RSI: '+m.rsi+'</span>';
+        h+='<div class="cmid">Trend: '+m.trend+' <span class="badge bd-fast">RSI: '+m.rsi+'</span>';
         if(priceAlerts[c.pair]) h+=' <span class="badge bd-ma">🔔</span>';
         if(stopLosses[c.pair]) h+=' <span class="badge bd-sl">🛑</span>';
         h+='</div>';
@@ -829,7 +789,7 @@ function renderTop5() {
 
 function openInfo() { document.getElementById('infoModal').style.display='flex'; }
 function closeInfo() { document.getElementById('infoModal').style.display='none'; }
-function openDetail(p) { activePair=p; document.getElementById('detailModal').style.display='flex'; document.getElementById('aiPredictWindow').style.display='none'; updateDetailUI(); drawSpark(p); }
+function openDetail(p) { activePair=p; document.getElementById('detailModal').style.display='flex'; updateDetailUI(); drawSpark(p); }
 function closeDetail() { activePair=null; document.getElementById('detailModal').style.display='none'; }
 
 function openAnalysisModal() {
@@ -929,7 +889,7 @@ function generateDynamicAnalysis(c, rsi, mfi, spread, ma, speed) {
     var text = "📊 <b>" + symbol + " İçin Derin Algoritma Analizi Raporu:</b><br><br>";
     text += "• <b>Mevcut Trend ve Momentum:</b> Fiyat şu anda " + fmtP(c.last) + " seviyesinde seyrediyor. Günlük değişim grafiği incelendiğinde %" + (change >= 0 ? "+" : "") + change.toFixed(2) + " yönlü bir hareketlilik hakim. ";
     if (change > 5) {
-        text += "Paritede güçlü bir alıcı dominasyonu (boğa baskısı) var. Fiyat kısa vadeli direnç kanallarını kırarak yukarı yönlü 1-5 dakikalık yeşil gövdeli mumlarla ivmesini dikleştirmiş durumda. Ancak bu dikey tırmanışlar kâr realizasyonlarını da tetikleyebilir. ";
+        text += "Paritede güçlü bir alıcı dominasyonu (boğa baskısı) var. Fiyat kısa vadeli direnç kanallarını kırarak yukarı yönlü ivmesini dikleştirmiş durumda. Ancak bu dik tırmanışlar kâr realizasyonlarını da tetikleyebilir. ";
     } else if (change < -5) {
         text += "Sert bir satıcı baskısı (ayı trendi) yaşanıyor. Fiyat destek seviyelerinin altına sarkar kendi panik satışları derinleşiyor. Alım yönlü aceleci davranmamak, taban oluşumunu beklemek güvenli olabilir. ";
     } else {
@@ -937,7 +897,7 @@ function generateDynamicAnalysis(c, rsi, mfi, spread, ma, speed) {
     }
     text += "<br><br>• <b>İndikatör Kombinasyon Analizi:</b> Anlık RSI değeri <b>" + rsi + "</b> ve Para Akışı İndeksi (MFI) <b>" + mfi + "</b> olarak ölçüldü. ";
     if (rsi >= 70 || mfi >= 75) {
-        text += "RSI ve MFI verilerinin her ikisi de aşırı alım (tepe) bölgesine ulaşıldığını ve Bollinger Üst Bandı'nın sert bir şekilde delindiğini tescilliyor. Piyasaya giren para doygunluk noktasına yaklaşmış. Teknik olarak bu durum, coinin 'pahalı' aşamada olduğuna ve yakın süreçte sert bir düzeltme (düşüş) eğiliminin baş gösterme ihtimalinin yüksek olduğuna işaret eder. ";
+        text += "RSI ve MFI verilerinin her ikisi de aşırı alım (tepe) bölgesine ulaşıldığını tescilliyor. Piyasaya giren para doygunluk noktasına yaklaşmış. Teknik olarak bu durum, coinin 'pahalı' aşamada olduğuna ve yakın süreçte sert bir düzeltme (düşüş) eğiliminin baş gösterme ihtimalinin yüksek olduğuna işaret eder. ";
     } else if (rsi <= 30 || mfi <= 25) {
         text += "İndikatörler aşırı satış (dip) bölgesinde alarm veriyor. Hacimsiz düşüş dalgası pariteyi matematiksel olarak aşırı iskonto moduna sokmuş. RSI ve MFI'ın bu seviyelerden yukarı dönecek ilk hamlesi, teknik bir tepki yükselişini tetikleyebilir. ";
     } else {
@@ -946,9 +906,9 @@ function generateDynamicAnalysis(c, rsi, mfi, spread, ma, speed) {
     text += "<br><br>• <b>Piyasa Yapısı ve Likidite:</b> 10 periyotluk hareketli ortalama (MA10) " + (ma ? fmtP(ma) : "Hesaplanıyor") + " seviyesinde. Fiyat şu an " + (ma && c.last > ma ? "bu ortalamanın üzerinde kalarak yönünü yukarı koruyor." : "bu ortalamanın altında baskılanarak zayıf bir duruş sergiliyor.");
     text += " Tahtadaki alış/satış makası (Spread) <b>%" + spread.toFixed(4) + "</b> seviyesinde. ";
     if (spread > 0.1) {
-        text += "Spread oranının yüksek olması likiditenin sığ olduğunu ve Emir Defterindeki satış (ask) duvarlarının kalın olabileceğini gösteriyor. Limit emir kullanmak riskleri azaltacaktır. ";
+        text += "Spread oranının yüksek olması likiditenin sığ olduğunu gösteriyor. Limit emir kullanmak riskleri azaltacaktır. ";
     } else {
-        text += "Dar spread yapısı ve saniyeler içinde eriyen satış duvarları derin bir emir defterine ve yüksek likiditeye işaret ediyor. Anlık alım-satım işlemlerinde fiyat kayması minimum düzeyde kalacaktır. ";
+        text += "Dar spread yapısı derin bir emir defterine ve yüksek likiditeye işaret ediyor. Anlık alım-satım işlemlerinde fiyat kayması minimum düzeyde kalacaktır. ";
     }
     text += "<br><br>• <b>Stratejik Değerlendirme Notu:</b> Anlık fiyat oynaklık hızı <b>" + speed + "</b> olarak kaydedildi. ";
     if (change > 0 && rsi < 65) {
@@ -959,106 +919,6 @@ function generateDynamicAnalysis(c, rsi, mfi, spread, ma, speed) {
         text += "Mevcut teknik parametreler doğrultusunda aşağıda destek seviyelerine yakın stop-loss kullanımı, yukarıda ise direnç bölgelerinde kademeli kâr alımı rasyonel bir ticaret stratejisi olacaktır.";
     }
     return text;
-}
-
-function generateFuture10MinPrediction() {
-    var c = allCoins.find(function(x){return x.pair === activePair;});
-    if (!c) return;
-
-    var rsi = calcRSI(c.pair);
-    var mfi = calcMFI(c.pair);
-    var spread = ((c.ask - c.bid) / c.bid * 100);
-    var ma = calcMA(c.pair, 10) || c.last;
-    var speed = calcSpeed(c.pair);
-    var change = c.dailyPercent;
-    var coinName = c.pair.replace('TRY', '');
-
-    var hist = changeHistory[c.pair];
-    var oneHourDelta = 0;
-    if (hist && hist.length > 0) {
-        oneHourDelta = change - hist[0].v;
-    }
-
-    var volumeStatus = "Nötr Akış";
-    var volumeColor = "#e2e8f0";
-    if (parseFloat(c.volume) > 1000000 && oneHourDelta > 0) {
-        volumeStatus = "Hacim Patlaması 🔥";
-        volumeColor = "#22c55e";
-    } else if (oneHourDelta < -1) {
-        volumeStatus = "Hacimli Çıkış (-)";
-        volumeColor = "#ff4757";
-    } else if (spread > 0.08) {
-        volumeStatus = "Sığ / Kararsız";
-        volumeColor = "#fbbf24";
-    }
-
-    var topStatus = "Uzak / Taban";
-    var topColor = "#22c55e";
-    if (rsi >= 70 || mfi >= 75) {
-        topStatus = "AŞIRI ALIM (RSI > 70)";
-        topColor = "#ff4757";
-    } else if (rsi >= 60 || mfi >= 60) {
-        topStatus = "Üst Banda Yakın";
-        topColor = "#fbbf24";
-    }
-
-    var reverseStatus = "Yatay İzleme";
-    var reverseColor = "#cbd5e1";
-    if (topStatus.includes("AŞIRI ALIM") && c.last < ma && speed.includes("PUMP")) {
-        reverseStatus = "Düzeltme Başladı 📉";
-        reverseColor = "#ff4757";
-    } else if (rsi < 30 && c.last > ma) {
-        reverseStatus = "Dip Dönüşü Başladı 📈";
-        reverseColor = "#22c55e";
-    } else if (change > 3 && speed.includes("PUMP")) {
-        reverseStatus = "Anlık Yeşil Mum (Marubozu)";
-        reverseColor = "#22c55e";
-    }
-
-    var volatilityMultiplier = 0.003; 
-    if (speed.includes("PUMP")) volatilityMultiplier = 0.007; 
-    
-    var expectedChange = 0;
-    if (reverseStatus.includes("Düzeltme")) expectedChange = -0.004;
-    else if (reverseStatus.includes("Dönüşü Başladı") || reverseStatus.includes("Marubozu")) expectedChange = 0.005;
-    else if (volumeStatus.includes("Patlaması")) expectedChange = 0.002;
-
-    var midEstimatedPrice = c.last * (1 + expectedChange);
-    var lowRange = midEstimatedPrice * (1 - volatilityMultiplier);
-    var highRange = midEstimatedPrice * (1 + volatilityMultiplier);
-
-    var report = "🔮 <b>" + coinName + " Önümüzdeki 10 Dakikalık Projeksiyon Raporu:</b><br><br>";
-    report += "Son 1 saatlik mikro trend tarandığında net değişim eğiliminin <b>%" + (oneHourDelta >= 0 ? "+" : "") + oneHourDelta.toFixed(2) + "</b> olduğu tespit edildi. ";
-    
-    if (volumeStatus.includes("Patlaması")) {
-        report += "Tahtaya son dakikalarda dikey hacim barlarıyla desteklenen <b>agresif piyasa alım emirleri (market buy)</b> giriş yapmış. Bu durum, emir defterindeki blok satış duvarlarının saniyeler içinde erimesini tetikliyor. ";
-    } else if (volumeStatus.includes("Çıkış")) {
-        report += "Son periyotta panik satışları ve <b>para çıkışları</b> ağırlıkta. Alıcı kademeleri aşağı çekiliyor. ";
-    } else {
-        report += "Giriş ve çıkışlar mikro dengede akümüle oluyor, ani kırılım tahta derinliğine bağlı. ";
-    }
-
-    report += "<br><br><b>Zirve ve Dönüş Kontrolü:</b> ";
-    if (rsi >= 70) {
-        report += "Coin matematiksel olarak 5m grafikte 70 bandını aşarak Bollinger üst sınırını delmiş ve <b>" + reverseStatus + "</b> evresine yaklaşmış. Kısa vadeli kâr realizasyonları kapıda olabilir. ";
-    } else if (rsi <= 28) {
-        report += "Parite son 1 saattir ezilerek mikro dip noktasına ulaşmış. Satıcılar gücünü yitirmek üzere. Anlık parametreler bir <b>" + reverseStatus + "</b> sinyali üretiyor. ";
-    } else {
-        report += "Mevcut fiyat ne tam bir zirvede ne de tam bir dipte. Ara istasyonda hareket ediyor. Geri dönüş baskısı henüz tetiklenmemiş, mevcut trend korunuyor. ";
-    }
-
-    report += "<br><br>🎯 <b>Gelecek 10 Dakika Öngörüsü:</b> Yapay zeka simülasyonu, mevcut sığlık makasını (Spread: %" + spread.toFixed(3) + ") ve anlık ivmeyi hesaplayarak önümüzdeki 10 dakika boyunca fiyatın <b>" + fmtP(lowRange) + "</b> ile <b>" + fmtP(highRange) + "</b> koridorunda fiyatlanma olasılığını yüksek görüyor.";
-
-    document.getElementById('aiMVolume').innerText = volumeStatus;
-    document.getElementById('aiMVolume').style.color = volumeColor;
-    document.getElementById('aiMTop').innerText = topStatus;
-    document.getElementById('aiMTop').style.color = topColor;
-    document.getElementById('aiMReverse').innerText = reverseStatus;
-    document.getElementById('aiMReverse').style.color = reverseColor;
-    document.getElementById('aiMTarget').innerText = fmtP(midEstimatedPrice);
-    
-    document.getElementById('aiPredictReport').innerHTML = report;
-    document.getElementById('aiPredictWindow').style.display = 'block';
 }
 
 function updateDetailUI() {
