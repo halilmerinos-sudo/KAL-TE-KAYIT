@@ -179,6 +179,70 @@ body{background:#0f172a;color:white;min-height:100vh;padding:12px;-webkit-user-s
     border-left-color: #ef4444 !important;
     box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.6);
 }
+
+/* ☀️ GÜNDÜZ (LIGHT) MODU STİLLERİ */
+body.light-mode { background: #f1f5f9; color: #0f172a; }
+body.light-mode .card { background: #ffffff; border-color: #cbd5e1; }
+body.light-mode .hdr p { color: #64748b; }
+body.light-mode .sbox { background: #f8fafc; border-color: #cbd5e1; }
+body.light-mode .sr:last-child { border-top-color: #cbd5e1; }
+body.light-mode .ibtn { background: #ffffff; color: #334155; border-color: #cbd5e1; }
+body.light-mode .delta-panel { background: #ffffff; border-color: #22c55e88; }
+body.light-mode .delta-header { border-bottom-color: #cbd5e1; }
+body.light-mode .delta-list { background: #f8fafc; }
+body.light-mode .delta-row { background: #f1f5f9; }
+body.light-mode .pnl-card { background: #ffffff; border-color: #38ef7d88; }
+body.light-mode .pnl-title { border-bottom-color: #cbd5e1; }
+body.light-mode .pnl-sel { background: #ffffff; border-color: #cbd5e1; color: #0f172a; }
+body.light-mode .pnl-f input { background: #ffffff; border-color: #cbd5e1; color: #0f172a; }
+body.light-mode .pnl-res { background: #f8fafc; border-color: #cbd5e1; }
+body.light-mode .pnl-cur { color: #334155; }
+body.light-mode .sig-panel { background: #ffffff; border-color: #cbd5e1; }
+body.light-mode .sig-header { border-bottom-color: #cbd5e1; }
+body.light-mode .sig-list { background: #f8fafc; }
+body.light-mode .sig-row { background: #f1f5f9; }
+body.light-mode .sig-nm { color: #334155; }
+body.light-mode .top5-card { background: #ffffff; border-color: #cbd5e1; }
+body.light-mode .sec-title { border-bottom-color: #cbd5e1; }
+body.light-mode .t5btn { background: #ffffff; border-color: #cbd5e1; color: #64748b; }
+body.light-mode .t5btn.up { background: #dcfce7; border-color: #22c55e; color: #15803d; }
+body.light-mode .t5btn.dn { background: #fee2e2; border-color: #ff4757; color: #b91c1c; }
+body.light-mode .t5row { background: #f8fafc; border-color: #cbd5e1; }
+body.light-mode .t5nm { color: #0f172a; }
+body.light-mode .sg input { background: #ffffff; border-color: #cbd5e1; color: #0f172a; }
+body.light-mode .sg label { color: #334155; }
+body.light-mode .fcard { background: #f8fafc; border-color: #cbd5e1; }
+body.light-mode .cbrow label { color: #334155; }
+body.light-mode .bbtn { background: #ffffff; border-color: #cbd5e1; color: #334155; }
+body.light-mode .srch input { background: #ffffff; border-color: #cbd5e1; color: #0f172a; }
+body.light-mode .thead { background: #cbd5e1; color: #334155; }
+body.light-mode .crow { background: #ffffff; border-color: #cbd5e1; }
+body.light-mode .cname { color: #0f172a; }
+body.light-mode .cprice { color: #334155; }
+body.light-mode .resize-bar { background: #cbd5e1; }
+body.light-mode .resize-bar::before { background: #64748b; }
+body.light-mode .mcard { background: #ffffff; border-color: #cbd5e1; }
+body.light-mode .mrow { border-bottom-color: #cbd5e1; }
+body.light-mode .mval { color: #0f172a; }
+body.light-mode .aibox { background: #f8fafc; color: #334155; }
+body.light-mode .pal { background: #f8fafc; border-color: #cbd5e1; }
+body.light-mode .pal input { background: #ffffff; border-color: #38ef7d; color: #0f172a; }
+body.light-mode .sl-input { background: #f8fafc; border-color: #ff475744; }
+body.light-mode .sl-input input { background: #ffffff; border-color: #ff4757; color: #0f172a; }
+body.light-mode .an-tab-btn { background: #f8fafc; border-color: #cbd5e1; color: #64748b; }
+body.light-mode .an-tab-btn.active { background: #ffffff; color: #0f172a; border-color: #fbbf24; }
+body.light-mode .an-card { background: #ffffff; border-color: #cbd5e1; }
+body.light-mode .an-coin-name { color: #0f172a; }
+body.light-mode .ai-window { background: #ffffff; }
+body.light-mode .ai-m-box { background: #f8fafc; }
+body.light-mode .ai-m-val { color: #0f172a; }
+body.light-mode .ai-report-text { background: #f0fdf4; color: #166534; }
+body.light-mode .toast-box { background: #ffffff; border-color: #cbd5e1; }
+body.light-mode .toast-box.up { background: #f0fdf4; }
+body.light-mode .toast-box.down { background: #fdf2f2; }
+body.light-mode .toast-coin { color: #0f172a; }
+body.light-mode .toast-body { color: #334155; }
+body.light-mode #dtSpark { background: #f8fafc !important; }
 </style>
 </head>
 <body>
@@ -203,7 +267,10 @@ body{background:#0f172a;color:white;min-height:100vh;padding:12px;-webkit-user-s
 </div>
 <div class="proxy-bar" id="proxyBar">Kaynak: —</div>
 </div>
-<button class="ibtn" onclick="openInfo()">⚙️ SİSTEM NASIL ÇALIŞIR?</button>
+<div style="display:flex; gap:8px; margin-bottom:10px;">
+<button class="ibtn" style="margin-bottom:0; flex:1;" onclick="openInfo()">⚙️ SİSTEM NASIL ÇALIŞIR?</button>
+<button class="ibtn" style="margin-bottom:0; flex:1; background:#fbbf24; color:#0f172a; border-color:#fbbf24;" onclick="toggleTheme()">🌓 TEMA DEĞİŞTİR</button>
+</div>
 </div>
 
 <div class="delta-panel">
@@ -420,6 +487,23 @@ var deltaLog=[];
 var WARMUP=3; 
 var lastPricesMap={}; 
 var currentAnalysisTab = 'dip'; 
+
+function toggleTheme() {
+    if (document.body.classList.contains('light-mode')) {
+        document.body.classList.remove('light-mode');
+        localStorage.setItem('ktTheme', 'dark');
+    } else {
+        document.body.classList.add('light-mode');
+        localStorage.setItem('ktTheme', 'light');
+    }
+}
+
+function checkSavedTheme() {
+    var savedTheme = localStorage.getItem('ktTheme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+    }
+}
 
 function fmtP(v) {
     var num = parseFloat(v);
@@ -978,7 +1062,7 @@ function generateDynamicAnalysis(c, rsi, mfi, spread, ma, speed) {
     }
     text += "<br><br>• <b>İndikatör Kombinasyon Analizi:</b> Anlık RSI değeri <b>" + rsi + "</b> ve Para Akışı İndeksi (MFI) <b>" + mfi + "</b> olarak ölçüldü. ";
     if (rsi >= 70 || mfi >= 75) {
-        text += "RSI ve MFI verilerinin her ikisi de aşırı alım (tepe) bölgesine ulaşıldığını tescilliyor. Piyasaya giren para doygunluk noktasına yaklaşmış. Teknik olarak bu durum, coinin 'pahalı' aşamada olduğuna ve yakın süreçte sert bir düzeltme (düşüş) eğiliminin baş gösterme ihtimalinin yüksek olduğuna işaret eder. ";
+        text += "RSI and MFI verilerinin her ikisi de aşırı alım (tepe) bölgesine ulaşıldığını tescilliyor. Piyasaya giren para doygunluk noktasına yaklaşmış. Teknik olarak bu durum, coinin 'pahalı' aşamada olduğuna ve yakın süreçte sert bir düzeltme (düşüş) eğiliminin baş gösterme ihtimalinin yüksek olduğuna işaret eder. ";
     } else if (rsi <= 30 || mfi <= 25) {
         text += "İndikatörler aşırı satış (dip) bölgesinde alarm veriyor. Hacimsiz düşüş dalgası pariteyi matematiksel olarak aşırı iskonto moduna sokmuş. RSI and MFI'ın bu seviyelerden yukarı dönecek ilk hamlesi, teknik bir tepki yükselişini tetikleyebilir. ";
     } else {
@@ -1178,7 +1262,6 @@ function drawSpark(pair) {
         var currentY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
         var newHeight = startHeight - (currentY - startY);
         
-        // iOS WebKit kilitlenmesini engellemek için tarayıcı viewport hesabı yerine sabit mobil üst sınır (600px) getirildi
         if (newHeight > 600) {
             list.style.maxHeight = "600px"; 
         } else if (newHeight < 200) {
@@ -1199,6 +1282,7 @@ function drawSpark(pair) {
     bar.addEventListener('touchstart', startDrag, { passive: true });
 })();
 
+checkSavedTheme();
 loadAll();
 fetchPrices();
 setInterval(fetchPrices, 3000);
