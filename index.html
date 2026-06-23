@@ -38,8 +38,8 @@ body{background:#0f172a;color:white;min-height:100vh;padding:12px;-webkit-user-s
 .sec-title{font-size:0.8rem;font-weight:bold;margin-bottom:8px;padding-bottom:6px;border-bottom:1px dashed #334155;}
 .t5-tabs{display:flex;gap:6px;margin-bottom:8px;}
 .t5btn{flex:1;padding:5px;text-align:center;border-radius:7px;border:1px solid #475569;background:#1e293b;color:#94a3b8;font-size:0.72rem;font-weight:bold;cursor:pointer;}
-.t5btn.up{background:#052e16;border-color:#22c55e;color:#22c55e;}
-.t5btn.dn{background:#2d0a0a;border-color:#ff4757;color:#ff4757;}
+.t5btn.up {background:#052e16;border-color:#22c55e;color:#22c55e;}
+.t5btn.dn {background:#2d0a0a;border-color:#ff4757;color:#ff4757;}
 .t5row{display:flex;align-items:center;padding:5px 7px;border-radius:8px;background:#1e293b;margin-bottom:3px;cursor:pointer;}
 .t5rk{font-size:0.68rem;color:#475569;width:16px;flex-shrink:0;}
 .t5nm{font-size:0.82rem;font-weight:bold;flex:1;}
@@ -58,9 +58,9 @@ body{background:#0f172a;color:white;min-height:100vh;padding:12px;-webkit-user-s
 .srch input{width:100%;padding:10px;outline:none;border-radius:9px;background:#0f172a;color:white;font-size:0.95rem;border:1px solid #475569;margin-bottom:10px;}
 .thead{display:flex;justify-content:space-between;background:#334155;padding:8px 10px;border-radius:99px;margin-bottom:8px;font-size:0.72rem;font-weight:bold;}
 .clist{max-height:400px;overflow-y:auto;transition: max-height 0.2s ease;}
-.crow{background:#0f172a;border-left:4px solid #475569;border-radius:11px;padding:10px;margin-bottom:8px;cursor:pointer;display:flex;flex-direction:column;transition: background-color 0.4s ease, border-left-color 0.4s ease;}
+.crow{background:#0f172a;border-left:4px solid #475569;border-radius:11px;padding:10px;margin-bottom:8px;cursor:pointer;display:flex;flex-direction:column;transition: all 0.2s ease-in-out;}
 .crow-top{display:flex;align-items:flex-start;width:100%;}
-.cchk{width:22px;flex-shrink:0;padding-top:2px;}
+.cchk"><input type="checkbox" width="15px" height="15px" accent-color="#38ef7d"></div>
 .cchk input{width:15px;height:15px;accent-color:#38ef7d;}
 .cbody{flex:1;}
 .ctop{display:flex;justify-content:space-between;margin-bottom:3px;}
@@ -87,7 +87,7 @@ body{background:#0f172a;color:white;min-height:100vh;padding:12px;-webkit-user-s
 .pal input{flex:1;background:#1e293b;border:1px solid #38ef7d;color:white;border-radius:5px;padding:5px;font-size:0.88rem;text-align:center;outline:none;}
 .pal input:focus{font-size:16px !important;}
 .palbtn{background:#38ef7d;color:#0f172a;border:none;border-radius:5px;padding:5px 7px;font-size:0.72rem;font-weight:bold;cursor:pointer;}
-.sl-input{display:flex;align-items:center;gap:6px;background:#0f172a;border:1px solid #ff475744;border-radius:7px;padding:5px 8px;margin-top:4px;}
+.sl-input {display:flex;align-items:center;gap:6px;background:#0f172a;border:1px solid #ff475744;border-radius:7px;padding:5px 8px;margin-top:4px;}
 .sl-input input{flex:1;background:#1e293b;border:1px solid #ff4757;color:white;border-radius:5px;padding:5px;font-size:0.88rem;text-align:center;outline:none;}
 .sl-input input:focus{font-size:16px !important;}
 .no-coin{text-align:center;padding:20px;color:#94a3b8;font-size:0.82rem;}
@@ -119,7 +119,6 @@ body{background:#0f172a;color:white;min-height:100vh;padding:12px;-webkit-user-s
 .toast-pct { font-family: monospace; }
 .toast-body { font-size: 0.72rem; color: #cbd5e1; font-family: monospace; }
 @keyframes toastSlide { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-@keyframes toastFade { to { transform: translateX(50%); opacity: 0; } }
 
 .anbtn { width: 100%; padding: 12px; background: linear-gradient(135deg, #7c3aed, #9333ea); color: white; border: none; border-radius: 14px; font-weight: bold; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3); transition: all 0.2s; }
 .anbtn:active { transform: scale(0.98); }
@@ -168,16 +167,18 @@ body{background:#0f172a;color:white;min-height:100vh;padding:12px;-webkit-user-s
 .resize-bar { width: 100%; height: 14px; background: #334155; border-radius: 99px; margin-bottom: 10px; cursor: ns-resize; display: flex; align-items: center; justify-content: center; position: relative; }
 .resize-bar::before { content: ""; width: 40px; height: 4px; background: #94a3b8; border-radius: 2px; }
 
-/* BELİRGİNLEŞTİRİLMİŞ PARLAK ANLIK RENK DEĞİŞİMLERİ */
+/* 🔥 KAMYON GİBİ PARLAYAN ANLIK AGRESİF TEPELER VE DİPLER */
 .flash-green { 
-    background-color: #052e16 !important; 
-    border-left-color: #22c55e !important;
-    box-shadow: inset 0 0 10px rgba(34, 197, 94, 0.6);
+    background-color: #04431b !important; 
+    border-left-color: #26e665 !important;
+    box-shadow: inset 0 0 22px rgba(38, 230, 101, 0.85) !important;
+    transform: scale(1.015);
 }
 .flash-red { 
-    background-color: #450a0a !important; 
-    border-left-color: #ef4444 !important;
-    box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.6);
+    background-color: #5c0606 !important; 
+    border-left-color: #ff3344 !important;
+    box-shadow: inset 0 0 22px rgba(255, 51, 68, 0.85) !important;
+    transform: scale(1.015);
 }
 
 /* ☀️ GÜNDÜZ (LIGHT) MODU STİLLERİ */
@@ -275,7 +276,7 @@ body.light-mode #dtSpark { background: #f8fafc !important; }
 
 <div class="delta-panel">
 <div class="delta-header">
-<div><span class="delta-title">⚡ %1.0 DEĞİŞİM UYARILARI</span><span class="delta-count" id="deltaCount">0</span></div>
+<div><span class="delta-title">⚡ %0.100 DEĞİŞİM UYARILARI</span><span class="delta-count" id="deltaCount">0</span></div>
 <div style="display:flex;align-items:center;gap:8px;">
 <button class="delta-clear" onclick="clearDeltaLogs()">Temizle</button>
 <div class="delta-toggle">
@@ -460,7 +461,7 @@ body.light-mode #dtSpark { background: #f8fafc !important; }
 <div class="mtitle" style="color:#3b82f6;">⚙️ SİSTEM BİLGİSİ</div>
 <div class="info-box">
 <b>📡 Bağlantı:</b> Engellenmeyen %100 canlı Binance Oracle veri motoru entegre edilmiştir.<br><br>
-<b>⚡ Mikro Takip:</b> Listelenen tüm coinlerde anlık %0.50'lik artı veya eksi yönlü fiyat değişimlerinde özel küçük bildirim penceresi açılır ve ses sinyali tetiklenir.<br><br>
+<b>⚡ Mikro Takip:</b> Listelenen tüm coinlerde anlık %0.100'lük artı veya eksi yönlü fiyat değişimlerinde özel küçük bildirim penceresi açılır ve ses sinyali tetiklenir.<br><br>
 <b>💾 Veri Saklama:</b> Seçili coinler ve alarmlar kapatıp açınca korunur.<br><br>
 <b>🛑 Stop-Loss:</b> Belirtilen % düşüşte "Stop-Loss tetiklendi!" uyarısı.<br><br>
 <b>🔔 Fiyat Alarmı:</b> Hedef fiyata ulaşınca bildirim.
@@ -589,15 +590,16 @@ function onData(data, srcName) {
     if (!isTyping) doRender();
     if (activePair) updateDetailUI();
     
+    // Anlık mikro tepe ve dip parlamalarının listede kamyon gibi yanması:
     Object.keys(priceDiffs).forEach(function(pair) {
         var rowEl = document.querySelector('[data-pair="' + pair + '"]');
         if (rowEl) {
             if (priceDiffs[pair] === 'up') {
                 rowEl.classList.add('flash-green');
-                setTimeout(function() { rowEl.classList.remove('flash-green'); }, 400);
+                setTimeout(function() { rowEl.classList.remove('flash-green'); }, 450);
             } else {
                 rowEl.classList.add('flash-red');
-                setTimeout(function() { rowEl.classList.remove('flash-red'); }, 400);
+                setTimeout(function() { rowEl.classList.remove('flash-red'); }, 450);
             }
         }
     });
@@ -619,10 +621,11 @@ function checkDeltaAlerts(newData) {
             if (oldPrice > 0) {
                 var deltaPercent = ((currentPrice - oldPrice) / oldPrice) * 100;
                 
-                if (deltaPercent >= 0.50) {
+                // %0.100 (Hassas Üretim Eşiği) üzerinden yakala
+                if (deltaPercent >= 0.10) {
                     addDeltaLog(p, 'UP', deltaPercent);
                 } 
-                else if (deltaPercent <= -0.50) {
+                else if (deltaPercent <= -0.10) {
                     addDeltaLog(p, 'DOWN', deltaPercent);
                 }
             }
@@ -655,7 +658,7 @@ function renderDeltaLogs() {
         var sign = d.dir === 'UP' ? '▲' : '▼';
         h += '<div class="delta-row" onclick="openDetail(\''+d.p+'\')">' +
              '<span class="delta-nm">'+d.p.replace('TRY','')+'</span>' +
-             '<span class="delta-val" style="color:'+color+'; font-weight:bold;">'+sign+' %'+Math.abs(d.diff).toFixed(2)+'</span>' +
+             '<span class="delta-val" style="color:'+color+'; font-weight:bold;">'+sign+' %'+Math.abs(d.diff).toFixed(3)+'</span>' +
              '<span class="delta-time">'+d.t+'</span>' +
              '</div>';
     });
