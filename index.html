@@ -60,7 +60,7 @@ body{background:#0f172a;color:white;min-height:100vh;padding:12px;-webkit-user-s
 .clist{max-height:400px;overflow-y:auto;transition: max-height 0.2s ease;}
 .crow{background:#0f172a;border-left:4px solid #475569;border-radius:11px;padding:10px;margin-bottom:8px;cursor:pointer;display:flex;flex-direction:column;transition: all 0.2s ease-in-out;}
 .crow-top{display:flex;align-items:flex-start;width:100%;}
-.cchk"><input type="checkbox" width="15px" height="15px" accent-color="#38ef7d"></div>
+.cchk{width:15px;height:15px;accent-color:#38ef7d;}
 .cchk input{width:15px;height:15px;accent-color:#38ef7d;}
 .cbody{flex:1;}
 .ctop{display:flex;justify-content:space-between;margin-bottom:3px;}
@@ -167,7 +167,6 @@ body{background:#0f172a;color:white;min-height:100vh;padding:12px;-webkit-user-s
 .resize-bar { width: 100%; height: 14px; background: #334155; border-radius: 99px; margin-bottom: 10px; cursor: ns-resize; display: flex; align-items: center; justify-content: center; position: relative; }
 .resize-bar::before { content: ""; width: 40px; height: 4px; background: #94a3b8; border-radius: 2px; }
 
-/* 🔥 KAMYON GİBİ PARLAYAN ANLIK AGRESİF TEPELER VE DİPLER */
 .flash-green { 
     background-color: #04431b !important; 
     border-left-color: #26e665 !important;
@@ -181,7 +180,6 @@ body{background:#0f172a;color:white;min-height:100vh;padding:12px;-webkit-user-s
     transform: scale(1.015);
 }
 
-/* ☀️ GÜNDÜZ (LIGHT) MODU STİLLERİ */
 body.light-mode { background: #f1f5f9; color: #0f172a; }
 body.light-mode .card { background: #ffffff; border-color: #cbd5e1; }
 body.light-mode .hdr p { color: #64748b; }
@@ -590,7 +588,6 @@ function onData(data, srcName) {
     if (!isTyping) doRender();
     if (activePair) updateDetailUI();
     
-    // Anlık mikro tepe ve dip parlamalarının listede kamyon gibi yanması:
     Object.keys(priceDiffs).forEach(function(pair) {
         var rowEl = document.querySelector('[data-pair="' + pair + '"]');
         if (rowEl) {
@@ -621,7 +618,6 @@ function checkDeltaAlerts(newData) {
             if (oldPrice > 0) {
                 var deltaPercent = ((currentPrice - oldPrice) / oldPrice) * 100;
                 
-                // %0.100 (Hassas Üretim Eşiği) üzerinden yakala
                 if (deltaPercent >= 0.10) {
                     addDeltaLog(p, 'UP', deltaPercent);
                 } 
@@ -677,18 +673,6 @@ function initAudio() {
 ['click','touchstart','mousedown','keydown','scroll'].forEach(function(evt) {
     document.addEventListener(evt, initAudio, { passive: true });
 });
-
-function bip(freq, t, dur, vol) {
-    try {
-        if (!audioCtx || audioCtx.state !== 'running') return;
-        var o = audioCtx.createOscillator(), g = audioCtx.createGain();
-        o.type = 'sine'; o.frequency.setValueAtTime(freq, t);
-        g.gain.setValueAtTime(vol || 0.2, t);
-        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-        o.connect(g); g.connect(audioCtx.destination);
-        o.start(t); o.stop(t + dur);
-    } catch(e) {}
-}
 
 function saveAll() {
     try {
@@ -995,32 +979,29 @@ function renderAnalysisContent() {
         var ma10 = calcMA(c.pair, 10);
         var isUpTrend = c.dailyPercent >= 0;
 
-        var isDipMatch = (rsi <= 35 && mfi <= 30); 
-        var isZirveMatch = (rsi >= 65 && mfi >= 70);
+        var isDipMatch = (rsi <= 38 && mfi <= 35); 
+        var isZirveMatch = (rsi >= 62 && mfi >= 65);
 
         if ((currentAnalysisTab === 'dip' && isDipMatch) || (currentAnalysisTab === 'zirve' && isZirveMatch)) {
             matchesCount++;
 
-            var isTrueTrend = false;
             var verdictText = '';
             var verdictClass = '';
 
             if (currentAnalysisTab === 'dip') {
-                if (spread < 0.08 && parseFloat(c.volume) > 50000) {
-                    isTrueTrend = true;
-                    verdictText = "🔍 ANALİZ: GERÇEK DİP/TEPKİ. İndikatörler tamamen boşalmış, derin tahta emirleri ve likidite hacmi bu dönüşü destekliyor. Yapay panik bitmiş olabilir.";
+                if (spread < 0.07 && parseFloat(c.volume) > 60000) {
+                    verdictText = "🔍 ANALİZ: ORGANİK TEPKİ ALANI. Tahta derinliği ve emir yapısı stabil bir birikime işaret ediyor. RSI/MFI uyumu taban aşamasının tamamlanmak üzere olduğunu gösteriyor.";
                     verdictClass = 'true';
                 } else {
-                    verdictText = "⚠️ ANALİZ: ALDATMACA / SAKINCALI. Likidite çok sığ (Spread yüksek veya hacim yetersiz). Yapay olarak aşağı baskılanıyor veya sahte emirlerle sönümleniyor olabilir.";
+                    verdictText = "⚠️ ANALİZ: LİKİDİTE TUZAĞI (SAHTE DİP). Spread makası çok açık veya işlem hacmi zayıf. Satıcıların ilgisizliğinden kaynaklı yapay bir düşüş sönümlenmesi riski var.";
                     verdictClass = 'fake';
                 }
             } else {
-                if (spread < 0.08 && parseFloat(c.volume) > 500000 && ma10 && c.last > ma10) {
-                    isTrueTrend = true;
-                    verdictText = "🔍 ANALİZ: GERÇEK BALON/ZİRVE. Güçlü para girişiyle organik tepeye ulaşmış. Göstergeler aşırı doymuş, kâr realizasyonu dalgası çok yakındır, dikkatli olunmalı.";
+                if (spread < 0.07 && parseFloat(c.volume) > 400000 && ma10 && c.last > ma10) {
+                    verdictText = "🔍 ANALİZ: DOYURGUNLUK NOKTASI (SAĞLIKLI TEPE). Yüksek hacimli para girişleri aşırı alım sınırlarını zorlamış. Momentum güçlü olsa da matematiksel kâr realizasyonu olasılığı masada.";
                     verdictClass = 'true';
                 } else {
-                    verdictText = "⚠️ ANALİZ: ALDATMACA / TUZAK. Hacimsiz spekülasyon veya sığ tahtada manipülatif yükseliş. Mal boşaltma (Pump-Dump) tuzağı riski barındırıyor.";
+                    verdictText = "⚠️ ANALİZ: SPEKÜLATİF ŞİŞME (PUMP TUZAĞI). Derinliği olmayan sığ emir defterinde ani fiyat yukarı sürülmüş. Likidite desteği olmadığı için sert dönüş dalgası üretebilir.";
                     verdictClass = 'fake';
                 }
             }
@@ -1044,51 +1025,67 @@ function renderAnalysisContent() {
     if (matchesCount === 0) {
         var contextMsg = onlySelInAnalysis ? "Seçtiğiniz coinler arasında" : "Tüm piyasada";
         html = `<div style="text-align:center;color:#94a3b8;font-size:0.8rem;padding:30px;">
-            Şu anda ${contextMsg} kriterlere uygun (${currentAnalysisTab === 'dip' ? 'RSI≤35 & MFI≤30' : 'RSI≥65 & MFI≥70'}) bir veri grubu bulunamadı.
+            Şu anda ${contextMsg} kriterlere uygun (${currentAnalysisTab === 'dip' ? 'RSI≤38 & MFI≤35' : 'RSI≥62 & MFI≥65'}) bir veri grubu bulunamadı.
         </div>`;
     }
 
     container.innerHTML = html;
 }
 
+/* 🔥 TAMAMEN YENİLENEN GERÇEKÇİ YAPAY ZEKA METİN MOTORU */
 function generateDynamicAnalysis(c, rsi, mfi, spread, ma, speed) {
     var symbol = c.pair.replace('TRY', '');
     var change = c.dailyPercent;
-    var text = "📊 <b>" + symbol + " İçin Derin Algoritma Analizi Raporu:</b><br><br>";
-    text += "• <b>Mevcut Trend ve Momentum:</b> Fiyat şu anda " + fmtP(c.last) + " seviyesinde seyrediyor. Günlük değişim grafiği incelendiğinde %" + (change >= 0 ? "+" : "") + change.toFixed(2) + " yönlü bir hareketlilik hakim. ";
-    if (change > 5) {
-        text += "Paritede güçlü bir alıcı dominasyonu (boğa baskısı) var. Fiyat kısa vadeli direnç kanallarını kırarak yukarı yönlü ivmesini dikleştirmiş durumda. Ancak bu dik tırmanışlar kâr realizasyonlarını da tetikleyebilir. ";
-    } else if (change < -5) {
-        text += "Sert bir satıcı baskısı (ayı trendi) yaşanıyor. Fiyat destek seviyelerinin altına sarkar kendi panik satışları derinleşiyor. Alım yönlü aceleci davranmamak, taban oluşumunu beklemek güvenli olabilir. ";
+    var text = "📊 <b>" + symbol + " Anlık Mikro-Metrik Teknik Analiz Özeti:</b><br><br>";
+    
+    // 1. KATMAN: Trend ve Oynaklık (Volatility) Analizi
+    text += "• <b>Piyasa Baskısı ve Yapı:</b> Şu an " + fmtP(c.last) + " seviyesinden geçen fiyat akışında ";
+    if (change > 4) {
+        text += "agresif bir alıcı iştahı (boğa momentumu) gözlemleniyor. Fiyat gün içinde dikey bir kanal oluşturarak kısa vadeli dirençleri hacimle aşmış durumda. Bu tarz dik hareketler likiditeyi yukarı süpürse de, ani düzeltme emirlerini tetikleme potansiyeli taşır.";
+    } else if (change < -4) {
+        text += "yoğun bir satıcı baskısı (ayı hakimiyeti) devrede. Panik satışları emir defterindeki alıcı kademelerini kırarak taban arayışını derinleştirmiş. Alım iştahı uyanana kadar fiyatın momentum kazanması zor görünüyor, aceleci kararlardan kaçınılmalı.";
     } else {
-        text += "Piyasa şu an yatay ve kararsız bir konsolidasyon (akümülasyon) evresinde. Alıcılar ve satıcılar arasında denge var, hacim kırılımı beklenmeli. ";
+        text += "yatay ve kararsız bir konsolidasyon (akümülasyon) yapısı hakim. Alıcı ve satıcı dengesi mikro ölçekte kitlenmiş durumda. Trendin netleşmesi için mevcut hacim koridorunun kırılması gerekiyor.";
     }
-    text += "<br><br>• <b>İndikatör Kombinasyon Analizi:</b> Anlık RSI değeri <b>" + rsi + "</b> ve Para Akışı İndeksi (MFI) <b>" + mfi + "</b> olarak ölçüldü. ";
-    if (rsi >= 70 || mfi >= 75) {
-        text += "RSI and MFI verilerinin her ikisi de aşırı alım (tepe) bölgesine ulaşıldığını tescilliyor. Piyasaya giren para doygunluk noktasına yaklaşmış. Teknik olarak bu durum, coinin 'pahalı' aşamada olduğuna ve yakın süreçte sert bir düzeltme (düşüş) eğiliminin baş gösterme ihtimalinin yüksek olduğuna işaret eder. ";
-    } else if (rsi <= 30 || mfi <= 25) {
-        text += "İndikatörler aşırı satış (dip) bölgesinde alarm veriyor. Hacimsiz düşüş dalgası pariteyi matematiksel olarak aşırı iskonto moduna sokmuş. RSI and MFI'ın bu seviyelerden yukarı dönecek ilk hamlesi, teknik bir tepki yükselişini tetikleyebilir. ";
+
+    // 2. KATMAN: Çoklu İndikatör Uyumsuzluk (Divergence) Süzgeci
+    text += "<br><br>• <b>RSI & MFI Osilatör Korelasyonu:</b> Paritenin anlık RSI değeri <b>" + rsi + "</b>, Para Akışı Endeksi (MFI) ise <b>" + mfi + "</b> olarak ölçümlendi. ";
+    
+    if (rsi >= 70 && mfi >= 70) {
+        text += "Her iki gösterge de eş zamanlı olarak 'Aşırı Alım' (Overbought) bölgesine girerek doygunluğu doğruluyor. Giriş yapan sıcak para akışı zirve sınırlarına dayanmış durumda. Matematiksel olarak bu durum, varlığın kısa vadede 'pahalı' fiyatlandığını ve teknik bir düzeltme/kâr realizasyonu riskinin yüksek olduğunu gösterir.";
+    } else if (rsi <= 35 && mfi <= 35) {
+        text += "Gelişmiş osilatörler paritenin net bir 'Aşırı Satış' (Oversold) bölgesinde iskonto edildiğine işaret ediyor. Satış hacmi fiyatı baskılasa da, indikatörlerin bu seviyelerde dip yapması genellikle bir teknik tepki yükselişinin (rebound) altyapısını hazırlar.";
+    } else if (rsi >= 65 && mfi < 45) {
+        text += "DİKKAT: Gizli bir negatif uyumsuzluk riski var! Fiyat momentum kazanmaya çalışsa da (RSI: " + rsi + "), içeriye giren net para akışı (MFI: " + mfi + ") bu yükselişi desteklemiyor. Güçsüz kalan bu yapı, sahte bir yükseliş (fakeout) üretip sert geri çekilebilir.";
+    } else if (rsi <= 35 && mfi > 55) {
+        text += "POZİTİF UYUMSUZLUK: Fiyat baskılanırken (RSI: " + rsi + "), arka planda balina veya kurumsal cüzdanların para girişi sağladığı (MFI: " + mfi + ") görülüyor. Mal toplama evresine işaret eden bu tablo, yakında yukarı yönlü sert bir kırılımı tetikleyebilir.";
     } else {
-        text += "Hem RSI ve MFI dengeli nötr bölgede (30-70 arası) hareket ediyor. Bu, yapay bir spekülasyon olmadığını, fiyat hareketinin hacimle uyumlu ve organik ilerlediğini gösterir. ";
+        text += "İndikatörler nötr bölgede dengeli ve paralel hareket ediyor. Mevcut fiyat hareketinin spekülatif bir dalgadan ziyade, tahta derinliğindeki emirlerle uyumlu, organik bir yapıda ilerlediği söylenebilir.";
     }
-    text += "<br><br>• <b>Piyasa Yapısı ve Likidite:</b> 10 periyotluk hareketli ortalama (MA10) " + (ma ? fmtP(ma) : "Hesaplanıyor") + " seviyesinde. Fiyat şu an " + (ma && c.last > ma ? "bu ortalamanın üzerinde kalarak yönünü yukarı koruyor." : "bu ortalamanın altında baskılanarak zayıf bir duruş sergiliyor.");
-    text += " Tahtadaki alış/satış makası (Spread) <b>%" + spread.toFixed(4) + "</b> seviyesinde. ";
-    if (spread > 0.1) {
-        text += "Spread oranının yüksek olması likiditenin sığ olduğunu gösteriyor. Limit emir kullanmak riskleri azaltacaktır. ";
+
+    // 3. KATMAN: Emir Defteri ve Likidite Sağlığı (Spread)
+    text += "<br><br>• <b>Derinlik ve Tahta Sağlığı:</b> 10 periyotluk hareketli ortalama (MA10) " + (ma ? fmtP(ma) : "Hesaplanıyor") + " seviyesinde seyrediyor. Fiyat " + (ma && c.last > ma ? "bu ortalamanın üzerinde konumlanarak pozitif yapısını koruyor." : "ortalamanın altında kalarak üzerindeki direnç baskısını kıramıyor.");
+    text += " Alış/satış kademeleri arasındaki spread oranı ise <b>%" + spread.toFixed(4) + "</b>.";
+    
+    if (spread > 0.09) {
+        text += " Geniş spread yapısı tahtanın sığ olduğunu kanıtlıyor. Likiditenin yetersiz olduğu bu anlarda piyasa emri kullanmak fiyat kaymasına (slippage) yol açabilir; limit emir tercih edilmelidir.";
     } else {
-        text += "Dar spread yapısı derin bir emir defterine ve yüksek likiditeye işaret ediyor. Anlık alım-satım işlemlerinde fiyat kayması minimum düzeyde kalacaktır. ";
+        text += " Dar ve sıkı spread yapısı emir defterinin oldukça derin ve likit olduğunu gösteriyor. Büyük hacimli anlık işlemlerde bile fiyat istikrarı korunacaktır.";
     }
-    text += "<br><br>• <b>Stratejik Değerlendirme Notu:</b> Anlık fiyat oynaklık hızı <b>" + speed + "</b> olarak kaydedildi. ";
-    if (change > 0 && rsi < 65) {
-        text += "Yükseliş trendi henüz şişmediği için alan hala açık görünüyor; trend takibi yapılabilir. ";
-    } else if (change < 0 && rsi > 35) {
-        text += "Düşüş eğilimi devam ediyor, net bir dönüş sinyali görülmeden işleme dahil olmak risk barındırabilir. ";
+
+    // 4. KATMAN: Aksiyonel Strateji Notu
+    text += "<br><br>• <b>Hız ve Risk Yönetimi:</b> Anlık fiyat oynaklık hızı [<b>" + speed + "</b>] olarak izleniyor. ";
+    if (change > 0 && rsi < 60) {
+        text += "Yükseliş trendi henüz aşırı şişme aşamasına gelmediği için trend yönlü takip mantıklı görünüyor. Belirlenen destek seviyelerinin altına dinamik stop konularak pozisyon taşınabilir.";
+    } else if (change < 0 && rsi > 40) {
+        text += "Düşüş momentumu gücünü koruyor. Dönüş formasyonu veya hacimli bir yeşil mum teyidi alınmadan işleme dahil olmak, düşen bıçağı tutmaya çalışmak gibi yüksek risk barındırır.";
     } else {
-        text += "Mevcut teknik parametreler doğrultusunda aşağıda destek seviyelerine yakın stop-loss kullanımı, yukarıda ise direnç bölgelerinde kademeli kâr alımı rasyonel bir ticaret stratejisi olacaktır.";
+        text += "Metriklerin karmaşık ve kararsız sinyaller ürettiği bu evrede, aşağıda destek altı yakın stop-loss koruması kullanmak, yukarıda ise direnç bölgelerinde parça parça kâr realizasyonu yapmak en rasyonel ticaret stratejisidir.";
     }
     return text;
 }
 
+/* 🔥 YENİLENEN PROJERSİYON MOTORU */
 function generateFuture10MinPrediction() {
     var c = allCoins.find(function(x){return x.pair === activePair;});
     if (!c) return;
@@ -1107,75 +1104,79 @@ function generateFuture10MinPrediction() {
         oneHourDelta = change - hist[0].v;
     }
 
+    // Emir defteri dengesini alıcı/satıcı oranına göre hesaplama
+    var totalOrderVolume = parseFloat(c.askVolume) + parseFloat(c.bidVolume);
+    var bidRatio = totalOrderVolume > 0 ? (parseFloat(c.bidVolume) / totalOrderVolume) : 0.5;
+
     var volumeStatus = "Nötr Akış";
     var volumeColor = "#e2e8f0";
-    if (parseFloat(c.volume) > 1000000 && oneHourDelta > 0) {
-        volumeStatus = "Güçlü Giriş (+)";
+    if (bidRatio > 0.58 && oneHourDelta > 0) {
+        volumeStatus = "Alıcı Ağırlıklı (+)";
         volumeColor = "#22c55e";
-    } else if (oneHourDelta < -1) {
-        volumeStatus = "Hacimli Çıkış (-)";
+    } else if (bidRatio < 0.42 && oneHourDelta < 0) {
+        volumeStatus = "Satıcı Bloklu (-)";
         volumeColor = "#ff4757";
     } else if (spread > 0.08) {
-        volumeStatus = "Sığ / Kararsız";
+        volumeStatus = "Sığ ve Kararsız";
         volumeColor = "#fbbf24";
     }
 
-    var topStatus = "Uzak / Taban";
+    var topStatus = "Normal Bölge";
     var topColor = "#22c55e";
-    if (rsi >= 75 || mfi >= 75) {
-        topStatus = "ZİRVEDE (Doymuş)";
+    if (rsi >= 72 || mfi >= 72) {
+        topStatus = "AŞIRI DOYGUNLUĞA YAKIN";
         topColor = "#ff4757";
-    } else if (rsi >= 60 || mfi >= 60) {
-        topStatus = "Zirveye Yakın";
-        topColor = "#fbbf24";
+    } else if (rsi <= 32 || mfi <= 32) {
+        topStatus = "AŞIRI İSKONTO / DİPTE";
+        topColor = "#38ef7d";
     }
 
-    var reverseStatus = "Yatay İzleme";
+    var reverseStatus = "Yatay Konsolide";
     var reverseColor = "#cbd5e1";
-    if (topStatus.includes("ZİRVEDE") && c.last < ma && speed.includes("HIZLI")) {
-        reverseStatus = "Düşüş Başladı 📉";
+    if (rsi >= 70 && c.last < ma && speed.includes("HIZLI")) {
+        reverseStatus = "Aşağı Düzeltme İvmesi";
         reverseColor = "#ff4757";
-    } else if (rsi < 30 && c.last > ma) {
-        reverseStatus = "Dip Dönüşü Başladı 📈";
+    } else if (rsi <= 30 && c.last > ma) {
+        reverseStatus = "Yukarı Tepki İvmesi";
         reverseColor = "#22c55e";
-    } else if (change > 3 && speed.includes("HIZLI")) {
+    } else if (bidRatio > 0.60 && speed.includes("HIZLI")) {
         reverseStatus = "Yukarı Momentum";
         reverseColor = "#22c55e";
     }
 
-    var volatilityMultiplier = 0.003; 
-    if (speed.includes("HIZLI")) volatilityMultiplier = 0.007; 
+    // Gerçekçi oynaklık katsayısı hesabı
+    var volatilityMultiplier = speed.includes("HIZLI") ? 0.006 : 0.0025; 
     
     var expectedChange = 0;
-    if (reverseStatus.includes("Düşüş")) expectedChange = -0.004;
-    else if (reverseStatus.includes("Dönüşü Başladı") || reverseStatus.includes("Momentum")) expectedChange = 0.005;
-    else if (volumeStatus.includes("Giriş")) expectedChange = 0.002;
+    if (reverseStatus.includes("Aşağı")) expectedChange = -0.0035;
+    else if (reverseStatus.includes("Tepki") || reverseStatus.includes("Momentum")) expectedChange = 0.0045;
+    else if (volumeStatus.includes("Alıcı")) expectedChange = 0.0015;
 
     var midEstimatedPrice = c.last * (1 + expectedChange);
     var lowRange = midEstimatedPrice * (1 - volatilityMultiplier);
     var highRange = midEstimatedPrice * (1 + volatilityMultiplier);
 
     var report = "🔮 <b>" + coinName + " Önümüzdeki 10 Dakikalık Projeksiyon Raporu:</b><br><br>";
-    report += "Son 1 saatlik veri mimarisi tarandığında net değişim trendinin <b>%" + (oneHourDelta >= 0 ? "+" : "") + oneHourDelta.toFixed(2) + "</b> olduğu tespit edildi. ";
+    report += "Son 1 saatlik emir akışları tarandığında, net fiyat değişiminin <b>%" + (oneHourDelta >= 0 ? "+" : "") + oneHourDelta.toFixed(2) + "</b> bandında olduğu saptandı. ";
     
-    if (volumeStatus.includes("Giriş")) {
-        report += "Tahtaya son 1 saat içerisinde kurumsal/büyük hacimli <b>para girişleri</b> gerçekleşmiş. Bu durum, emir defterindeki blok satışlerin eritilmesini kolaylaştırıyor. ";
-    } else if (volumeStatus.includes("Çıkış")) {
-        report += "Son 1 saatlik periyotta panik satışları ve <b>para çıkışları</b> ağırlıkta. Alıcı kademeleri aşağı çekiliyor. ";
+    if (volumeStatus.includes("Alıcı")) {
+        report += "Tahtadaki bekleyen alım emirlerinin yoğunluğu satıcıları eritmeye başlamış. Alıcıların bu baskısı, kısa vadeli direnç duvarlarının yukarı yönlü esnemesini kolaylaştırıyor.";
+    } else if (volumeStatus.includes("Satıcı")) {
+        report += "Emir defterinde yukarı kademelere konan satış blokları fiyatta baskı oluşturuyor. Alıcı kademelerinin zayıflığı fiyatı aşağı yönlü testlere açık bırakıyor.";
     } else {
-        report += "Giriş ve çıkışlar mikro dengede akümüle oluyor, ani kırılım tahta derinliğine bağlı. ";
+        report += "Alıcı ve satıcı emir hacimleri yatay dengede akümüle oluyor. Kırılım anlık derinlik değişimlerine bağlı gelişecek.";
     }
 
-    report += "<br><br><b>Zirve ve Dönüş Kontrolü:</b> ";
-    if (rsi >= 75) {
-        report += "Coin matematiksel zirvesini <b>tamamlamış</b> ve aşırı doygunluk fazına geçmiş. Son dakikalardaki hareket hızı incelendiğinde <b>" + reverseStatus + "</b> teyit ediliyor. Teknik düzeltme dalgası sertleşebilir. ";
-    } else if (rsi <= 28) {
-        report += "Parite son 1 saattir ezilerek dip noktasına ulaşmış. Satıcılar gücünü yitirmek üzere. Anlık tahmin mekanizmaları bir <b>" + reverseStatus + "</b> sinyali üretiyor. ";
+    report += "<br><br><b>Formasyon ve Hız Kontrolü:</b> ";
+    if (rsi >= 70) {
+        report += "Parite teknik zirve sınırlarına ulaşmış durumda ve aşırı doymuş görünüyor. İvme hızı incelendiğinde [<b>" + reverseStatus + "</b>] emareleri mevcut. Dikkatli olunmalı.";
+    } else if (rsi <= 30) {
+        report += "Parite teknik olarak aşırı ezilmiş ve iskonto bölgesine oturmuş. Satıcıların gücü sönümlenirken sistem anlık [<b>" + reverseStatus + "</b>] sinyali üretmeye başlamış.";
     } else {
-        report += "Mevcut fiyat ne tam bir zirvede ne de tam bir dipte. Ara istasyonda hareket ediyor. Geri dönüş baskısı henüz tetiklenmemiş, mevcut trend korunuyor. ";
+        report += "Fiyat ne tam bir zirvede ne de tam bir dipte. Ara bir istasyonda akümüle oluyor, dolayısıyla mevcut mikro trend yapısının korunması beklenir.";
     }
 
-    report += "<br><br>🎯 <b>Gelecek 10 Dakika Öngörüsü:</b> Yapay zeka simülasyonu, mevcut sığlık makasını (Spread: %" + spread.toFixed(3) + ") ve anlık ivmeyi hesaplayarak önümüzdeki 10 dakika boyunca fiyatın <b>" + fmtP(lowRange) + "</b> ile <b>" + fmtP(highRange) + "</b> koridorunda fiyatlanma olasılığını yüksek görüyor.";
+    report += "<br><br>🎯 <b>Gelecek 10 Dakika Matematiksel Koridor Öngörüsü:</b> Yapay zeka simülasyonu, anlık tahta spread oranını (% " + spread.toFixed(3) + ") ve emir ağırlıklarını süzerek, önümüzdeki 10 dakika boyunca fiyatın <b>" + fmtP(lowRange) + "</b> ile <b>" + fmtP(highRange) + "</b> koridorunda dalgalanma olasılığını yüksek görüyor.";
 
     document.getElementById('aiMVolume').innerText = volumeStatus;
     document.getElementById('aiMVolume').style.color = volumeColor;
@@ -1246,7 +1247,6 @@ function drawSpark(pair) {
     var bar = document.getElementById('resizeBar');
     var list = document.getElementById('coinList');
     var startY, startHeight;
-    var originalHeight = 400; 
 
     function startDrag(e) {
         startY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
